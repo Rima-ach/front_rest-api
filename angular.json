@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "api-rest"
+    }
+  },
+  "defaultProject": "api-rest",
+  "cli": {
+    "analytics": false
+  }
 }
