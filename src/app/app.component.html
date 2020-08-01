@@ -1,5 +1,14 @@
 <h2>Ajouter un employee</h2>
-<form (ngSubmit)="onSubmit()">
+<div *ngFor="let e of getObservableList() | async">
+  <p>
+    "Employee : "
+  </p>
+  {{e.nom}}
+  {{e.prenom}}
+  {{e.domaine}}
+  {{e.email}}
+</div>
+<form>
     <div class="form-group">
         <label for="exampleInputPassword1">Nom</label>
         <input type="nom" [(ngModel)]="employee.nom" [ngModelOptions]="{standalone: true}" class="form-control" id="exampleInputNom" placeholder="Nom">
@@ -18,9 +27,10 @@
      class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email">
     
   </div>
-  <button type="submit" (click)="insertAllSelected()" class="btn btn-primary">Submit</button>
-
+  <button type="submit" (click)="addEmployee()" class="btn btn-primary">Ajouter</button>
+  <button type="submit" (click)="insertAllSelected()" class="btn btn-primary">Ajouter les employees</button>
 </form>
+
 
 
 <h2>Chercher des employees</h2>

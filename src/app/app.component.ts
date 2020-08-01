@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { EmployeeService } from './services/employee.Service';
 import { Employee } from './models/models';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +10,15 @@ import { Employee } from './models/models';
 })
 export class AppComponent {
   title = 'api-rest';
-
-  constructor(private employeeService: EmployeeService) { }
+  employees = [];
+  obsEmployees: BehaviorSubject<any[]> = new BehaviorSubject(this.employees);
+  constructor(private employeeService: EmployeeService) {
+    
+   }
   ngOnInit() {
   }
-  employees = [];
+  
+
   employee = {
     nom:'',
     prenom:'',
@@ -26,13 +31,15 @@ export class AppComponent {
   value="";
 
   addEmployee():void{
-    this.submitted = false;
+    this.employees.push(this.employee);
     this.employee = new Employee();
+
   }
 
   insertAllSelected(){
     this.employeeService.createEmployee(this.employees).subscribe(data => console.log(data), error => console.log(error));
-    this.employee = new Employee();
+    this.employees=[];
+    this.obsEmployees.next(this.employees);
   }
   onSubmit() {
     this.submitted = true;
@@ -41,5 +48,7 @@ export class AppComponent {
   async search(){
     this.employeesSearchList =await this.employeeService.getEmployeeList(this.criteria, this.value).toPromise();
   }
+
+  async getObservableList(){ return await this.obsEmployees.asObservable().toPromise() }
 
 }
